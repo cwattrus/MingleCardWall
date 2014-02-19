@@ -15,6 +15,7 @@
 }
 .lightbox {
 	background-color: rgb(255,255,255);
+	border-left: 6px solid #7AD16D;
 	margin: 0 auto;
 	margin-top: 100px;
 	width: 700px;
@@ -32,20 +33,21 @@
 	font-family: "Helvetica Neue", Arial, Helvetica;
 	font-size: 21px;
 	font-weight: 300;
-	width: 100%;
+	width: 98%;
 	margin-bottom: 10px;
 	padding: 3px 5px;
+	outline: none;
 }
 .lightbox .card-content {
-	border: 1px solid #bbb;
+	border: 1px solid #ddd;
 	font-family: "Helvetica Neue", Arial, Helvetica;
 	font-size: 12pt;
 	font-weight: 300;
 	height: 300px;
 	margin-bottom: 10px;
-	width: 100%;
+	width: 98%;
 	padding: 5px;
-
+	outline: none;
 }
 
 
@@ -67,7 +69,7 @@
 	display: inline-block;
 	width: 180px;
 	vertical-align: top;
-	margin-left: 15px; 
+	margin-left: 15px;
 }
 
 .top-right-nav {
@@ -147,25 +149,25 @@
 	margin-top: 10px;
 	margin-right: 10px;
 }
-			
-.box-content {	
+
+.box-content {
 	background-color: rgba(255,255,255,0.9);
 	box-sizing: border-box;
 	color: white;
-	padding: 20px 10px 0 20px;	
-	width: 700px;	
+	padding: 20px 10px 0 20px;
+	width: 700px;
 }
-			
+
 .box-footer {
 	background-color: rgba(255,255,255,0.9);
 	box-sizing: border-box;
-	padding: 20px 10px 20px 20px;	
+	padding: 20px 10px 20px 20px;
 	width: 700px;
 }
 .box-footer button {
 	display: block;
 }
-			
+
 
 .box-form {
 	padding: 10px 0;
@@ -263,4 +265,18 @@ label {
 
 a {
 	cursor: pointer;
+}
+
+.tabs {
+	margin-left: 15px;
+	margin-top: 10px;
+}
+.tab {
+	display: inline-block;
+	padding: 10px 15px 0px 15px;
+}
+.tab.selected {
+	border-width: 1px 1px 0 1px;
+	border-color: #c3c3c3;
+	border-style: solid;
 }

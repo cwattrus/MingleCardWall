@@ -13,21 +13,6 @@ if (Meteor.isClient) {
     });
 
     $(".card-column").on("dropactivate", handleDropActivate);
-    
-    // $('.makeMeDraggable').draggable({
-    //   snap: '.tagsinput',
-    //   appendTo: 'parent',
-    //   helper: 'clone',
-    //   zIndex: 999,
-    //   start: handleBeadDragActivate
-    // });
-    // $('.makeMeDroppable').droppable( {
-    //     drop: handleBeadDropEvent,
-    //     dropactivate : handleBeadDropActivate,
-    //     dropdeactivate : handleBeadDropDeactivate
-    // });
-    // $( ".makeMeDroppable" ).on("dropactivate", handleBeadDropActivate);
-    // $( ".makeMeDroppable" ).on("dropdeactivate", handleBeadDropDeactivate);
   }
 
   function handleDropActivate(event, ui) {
@@ -48,7 +33,7 @@ if (Meteor.isClient) {
     else {
       Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'done'}});
     }
-  
+
   }
 
   Meteor.subscribe("cards");
@@ -65,6 +50,8 @@ if (Meteor.isClient) {
 
   Template.header.events({
     'click #new_card' : function () {
+      $(".card-title").val("");
+      $(".card-content").val("");
       $(".overlay").fadeToggle(300);
     },
     'click .lightbox' : function(event) {
@@ -76,8 +63,25 @@ if (Meteor.isClient) {
     'click #save_card' : function() {
       var card_title = $(".card-title").val();
       var card_content = $(".card-content").val();
+      if(Session.get("selected_card")) {
+        Cards.update({ _id:Session.get("selected_card")} , { $set: {title: card_title, content: card_content}});
+        Session.set("selected_card", null);
+      }
+      else {
+        Cards.insert({title: card_title, content: card_content, owner: Meteor.userId(), status: "todo"});
+      }
+      $(".overlay").fadeToggle(300);
+      $(".card-title").val("");
+      $(".card-content").val("");
+    },
+  });
 
-      Cards.insert({title: card_title, content: card_content, owner: Meteor.userId(), status: "todo"});
+  Template.cardWall.events({
+    'click .mini-card' : function() {
+      $(".card-content").val(this.content);
+      $(".card-title").val(this.title);
+      $(".overlay").fadeToggle(300);
+      Session.set("selected_card", this._id);
     }
   });
 }
