@@ -1,0 +1,23 @@
+<template name="header">
+	<span class="header">
+		<span class="pull-right top-right-nav">
+			<span class="profile-link">Welcome {{first_name}}</span>
+			<a id="log_out" class="alt"><i class="fa fa-sign-out"></i></a>
+		</span>
+		<img class="logo" src="/logo.png">
+	  	<div class="project-name">Snap-Ci</div>
+	  	<button class="dropdown">
+	  		<i class="fa fa-chevron-down"></i>
+	  	</button>
+	  	<button class="alt image" id="new_card">
+	  		<i class="fa fa-plus-circle"></i> New Card
+	  	</button>
+	</span>
+	<div class="overlay">
+		<div class="lightbox">
+			<input type="text" class="card-title">
+			<textarea class="card-content"></textarea>
+			<button id="save_card">Save</button>
+		</div>
+	</div>
+</template>
