@@ -1,0 +1,13 @@
+.beta {
+	background: white;
+	border: 1px solid #DDD;
+	height: 100px;
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	box-sizing: border-box;
+	padding: 30px 50px;
+}
+
+.thanks {display: none;}

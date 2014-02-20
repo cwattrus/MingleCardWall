@@ -1,9 +1,4 @@
 if (Meteor.isClient) {
-
-  // Template.cardWall.cards_todo = function() {
-  //   return Cards.find({status:"todo"}, {sort: {index: 1}});
-  // }
-
   Template.navigation.events({
     'click #new_tab' : function() {
     	$("#new_tab").addClass("selected");    	

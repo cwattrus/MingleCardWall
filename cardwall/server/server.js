@@ -18,9 +18,11 @@ if (Meteor.isServer) {
   	Cards.insert({title: "Become a power user", content: "Watch this to learn about Mingle", owner: user_id, status: "todo", index:3});
   }
 
+
   Meteor.users.allow({
     update: function(userId, docs, fields, modifier) {
         return true;
     }
-    });
+  });
+
 }

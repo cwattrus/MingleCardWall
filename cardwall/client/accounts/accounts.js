@@ -2,6 +2,9 @@ if (Meteor.isClient) {
   Template.header.first_name = function () {
     return Meteor.user().profile.first_name;
   };
+  Template.beta.first_name = function () {
+    return Meteor.user().profile.first_name;
+  };
 
 
   Template.signup.events({
@@ -18,7 +21,12 @@ if (Meteor.isClient) {
         console.log(counter);
            counter +=1;
            if (counter == 1){
-            Accounts.createUser({username:email, password: password, email: email, profile : {first_name: first, last_name: last, url: url, first_login: true }});
+            Accounts.createUser({username:email, password: password, email: email, profile : {first_name: first, last_name: last, url: url, first_login: true }}, function(error) {
+              if(error) {
+                $("#load").hide();
+                $("#signup_page").fadeToggle(200);
+              }
+            });
           } 
         },4000);
     },
