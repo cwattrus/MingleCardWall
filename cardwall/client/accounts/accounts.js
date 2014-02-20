@@ -9,14 +9,17 @@ if (Meteor.isClient) {
   Template.signup.events({
     'click #add_new_user' : function () {
       createUserAndLogin();
+      Logs.insert({"action": "Sign up and login via click"});
     },
     'click #login' : function() {
       $("#signup_page").toggle();
       $("#login_page").fadeToggle(300);
+      Logs.insert({"action": "Switch to login"});
     },
     'keypress #site_url': function (evt) {
       if (evt.which === 13) {
         createUserAndLogin();
+        Logs.insert({"action": "Sign up and login via enter"});
       }
     }
   });
@@ -25,6 +28,7 @@ if (Meteor.isClient) {
     'click #sign_up' : function() {
       $("#login_page").toggle();
       $("#signup_page").fadeToggle(300);
+      Logs.insert({"action": "Switch to sign in"});
     },
     'click #authenticate_user' : function () {
       login();
@@ -33,6 +37,7 @@ if (Meteor.isClient) {
       if (evt.which === 13) {
         login();
       }
+      Logs.insert({"action": "Login via enter"});
     }
   })
 
@@ -63,12 +68,13 @@ if (Meteor.isClient) {
     var email = $("#login_email_address").val();
     var password = $("#login_password").val();
     Meteor.loginWithPassword(email, password);
+    Logs.insert({"action": "Login via click"});
   }
 
   Template.header.events({
     'click #log_out' : function () {
+      Logs.insert({"action": "Logout"});
       Meteor.logout();
-
     }
   });
 }

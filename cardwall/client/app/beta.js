@@ -14,8 +14,9 @@ if (Meteor.isClient) {
       Beta.insert({"email":Meteor.user().emails[0].address});
       $(".beta").css({"height":"300px"});
       $(".thanks").css({"display":"inline-block"});
+      Logs.insert({"action": "Sign up for beta"});
     },
-    
+
   });
 
 }
