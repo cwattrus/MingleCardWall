@@ -23,7 +23,7 @@ if (Meteor.isClient) {
   function moveFirstCard() {
     if((Meteor.user()!=null)||(Meteor.user()!=undefined)) {
       if(($(".ring")[0]==undefined)&&(Meteor.user().profile.first_login)) {
-        if($('div:contains("Move this ")')[2]!=undefined) {
+        if($('div:contains("Click me ")')[2]!=undefined) {
           var card_id = $('div:contains("Click me ")')[2].getAttribute('id');
           Cards.update({'_id':card_id },{$set: {'status': 'doing', pulse: true}});
           return card_id;
