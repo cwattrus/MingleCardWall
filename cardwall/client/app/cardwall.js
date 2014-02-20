@@ -1,10 +1,12 @@
 if (Meteor.isClient) {
-  var counter = 0;
+  var counter = 1;
+  var times_to_try = 1;
 
   Meteor.startup(function () {
     $(document).ready(function (){
-      if(counter<1) {
-        moveFirstCard();
+      if(counter==times_to_try) {
+        var card = moveFirstCard();
+        if(card==false) times_to_try += 1;
         counter += 1;
       }
     });
