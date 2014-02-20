@@ -42,3 +42,10 @@
 }
 
 .card-wall {display: block;}
+
+#close_beta_invite {
+	font-size: large;
+	color: gray;
+	cursor: pointer;
+	display: none;
+}
