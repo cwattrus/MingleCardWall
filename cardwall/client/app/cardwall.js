@@ -1,5 +1,6 @@
 if (Meteor.isClient) {
   var counter = 0;
+  var times_to_try = 1;
 
   Template.cardWall.rendered = function() {
     $(".mini-card").draggable({
@@ -14,24 +15,33 @@ if (Meteor.isClient) {
     });
 
     $(".card-column").on("dropactivate", handleDropActivate);
-    setTimeout(function(){
+
+    
+    }
+
+    Template.cardWall.created = function() {
+      console.log("why?");
+      setTimeout(function(){
            counter +=1;
-           if (counter == 1){
+           if (counter == times_to_try){
             card_id = moveFirstCard();
+            if(card_id==false) {
+              times_to_try += 1;
+            }
           } 
       },4000);
     }
   
   function moveFirstCard() {
-      console.log(Meteor.user()._id);
-
-    if(($(".ring")[0]==undefined)&&(Meteor.user().profile.first_login)) {
-
-      var card_id = $('.mini-card')[0].getAttribute('id');
-      Cards.update({'_id':card_id },{$set: {'status': 'doing', pulse: true}});
-      Meteor.users.update({'_id':Meteor.user()._id },{$set: {'first_login': false}});
-      return card_id;
+    if((Meteor.user()!=null)||(Meteor.user()!=undefined)) {
+      if(($(".ring")[0]==undefined)&&(Meteor.user().profile.first_login)) {
+        var card_id = $('.mini-card')[0].getAttribute('id');
+        Cards.update({'_id':card_id },{$set: {'status': 'doing', pulse: true}});
+        Meteor.users.update({'_id':Meteor.user()._id },{$set: {'first_login': false}});
+        return card_id;
+      }
     }
+    return false;
   }
 
   function handleDropActivate(event, ui) {
@@ -77,41 +87,61 @@ if (Meteor.isClient) {
     'click #new_card' : function () {
       $(".card-title").val("");
       $(".card-content").val("");
-      $(".overlay").fadeToggle(300);
+      var newCard = Cards.insert({title: "My new card", content: "A world of possiblies...", owner: Meteor.userId(), status: "todo"});
+      Session.set("selected_card", newCard);
+      Session.set("editing", true);
     },
     'click .lightbox' : function(event) {
       event.stopPropagation();
     },
     'click .overlay' : function () {
-      $(".overlay").fadeToggle(300);
+      Session.set("selected_card", null);
+      Session.set("editing", false);
     },
     'click #save_card' : function() {
       var card_title = $(".card-title").val();
       var card_content = $(".card-content").val();
       if(Session.get("selected_card")) {
         Cards.update({ _id:Session.get("selected_card")} , { $set: {title: card_title, content: card_content}});
-        Session.set("selected_card", null);
+        $(".card-content").val(card_content);
+        $(".card-content-read").html(card_content);
+        $(".card-title").val(card_title);
+        $(".card-title-read").html(card_title);
       }
       else {
-        Cards.insert({title: card_title, content: card_content, owner: Meteor.userId(), status: "todo"});
+        var newCard = Cards.insert({title: card_title, content: card_content, owner: Meteor.userId(), status: "todo"});
+        Session.set("selected_card", newCard);
+        newCard = Cards.findOne({"_id": newCard});
+        $(".card-content").val(newCard.content);
+        $(".card-content-read").html(newCard.content);
+        $(".card-title").val(newCard.title);
+        $(".card-title-read").html(newCard.title);
       }
-      $(".overlay").fadeToggle(300);
-      $(".card-title").val("");
-      $(".card-content").val("");
+      Session.set("editing", false);
+
     },
     'click .dropdown' : function() {
       $(".projects-dropdown").toggle(100);
+    },
+    'click #edit_card' : function() {
+      if(Session.get("selected_card")) {
+        Session.set("editing", true);
+      }
+    },
+    'click #close_card' : function() {
+      $(".overlay").fadeToggle(300);
+      $(".card-title").val("");
+      $(".card-content").val("");
+      Session.set("selected_card", null);
     }
   });
 
   Template.cardWall.events({
     'click .mini-card' : function() {
-      $(".card-content").val(this.content);
-      $(".card-title").val(this.title);
-      $(".overlay").fadeToggle(300);
       Session.set("selected_card", this._id);
-      var card_id = $('.ring')[0].parentNode.getAttribute('id');
-      Cards.update({'_id':card_id },{$set: {pulse: false}});
+
+      if($('.ring')[0]) var card_id = $('.ring')[0].parentNode.getAttribute('id');
+      if(card_id) Cards.update({'_id':card_id },{$set: {pulse: false}});
     },
 
   });

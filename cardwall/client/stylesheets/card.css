@@ -16,15 +16,19 @@
 }
 
 .card-column {
-	float: left;
+	display: inline-block;
+	vertical-align: top;
 	background-color: #f3f3f3;
-	padding: 10px;
-	width: 370px;
+	max-width: 380px;
+	min-width: 200px;
+	width: 30%;
 	margin-right: 20px;
 	height: 600px;
 	overflow: auto;
 }
-
+.column-title {
+	padding: 10px; 
+}
 .ring {
     border: 3px solid #999;
     -webkit-border-radius: 30px;

@@ -13,13 +13,26 @@
 	  		<i class="fa fa-plus-circle"></i> New Card
 	  	</button>
 	</span>
+	{{#if has_content}}
 	<div class="overlay">
 		<div class="lightbox">
-			<input type="text" class="card-title">
-			<textarea class="card-content"></textarea>
-			<button id="save_card">Save</button>
+			{{#if not_editing}}
+				<div class="view">
+					{{> cardcontent}}
+					<button id="edit_card" class="alt">Edit</button>
+					<button id="close_card" class="">Close</button>
+				</div>
+			{{/if}}
+			{{#if is_editing}}
+				<div class="edit">
+					<textarea class="card-title" placeholder="Enter a descriptive title...">{{card_title}}</textarea>
+					<textarea class="card-content" placeholder="Optionally give your card some markdown content...">{{card_content}}</textarea>
+					<button id="save_card">Save</button>
+				</div>
+			{{/if}}
 		</div>
 	</div>
+	{{/if}}
 	<ul class="projects-dropdown">
 		<li>Twist Card Wall</li>
 		<li>Go Open Source</li>
@@ -27,4 +40,9 @@
 		<li><hr /></li>
 		<li><em>+ New Project</em></li>
 	</li>
+</template>
+
+<template name="cardcontent">
+	<h2 class="card-title-read">{{card_title}}</h2>
+	<div class="card-content-canvas">{{#markdown}}{{card_content}}{{/markdown}}</div>
 </template>
