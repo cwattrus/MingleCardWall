@@ -12,21 +12,36 @@ if (Meteor.isServer) {
   	  return user;
 	});
 
-  var movecard = "##You're a ninja!\
-      Now that you know your way around the card wall, take a look around.\
-       \n \
-      **Things to explore**\
-       \n \
-      1.    The projects list\
-      1.    Adding markdown content\
-      1.    Reports\
-      1.    Activity\
-      1.    Adding a tab[Thanks](/thanks.png)"
+  var movecard = "By dragging your card across the card wall you can change the status of the work your card represents.\
+    \n \n \
+  In this example your three status options are To Do, Doing, or Done.\
+    \n \n \
+  Close this card and drag it to **Done**.";
+
+  var newcard = "Welcome to Mingle!\
+    \n==============\
+    \n \n \
+  Cards represent small chunks of work that need to be completed.  The more specific the card, the better.\
+    \n \n \
+  Get started by closing this card and creating your own.";
+
+  var powercard = "You're on your way to mastering Mingle!\
+\n============================\
+\n\n\
+We believe there is a world of possibilities ahead of you... well, it's still in beta so more like 4 possibilities, but they're still pretty cool.\
+\n\n\
+\n\n\
+Try clicking around a bit and be sure to check out the following:\
+\n\n\
+- **Add a card** of your own and change its status\n\
+- Check out the other tabs like **Reports** and **Activity**\n\
+- Take a look at what it would be like to manage your tabs by clicking the **+**\n\
+- **Become a beta user!**";
 
   function seedCards(user_id) {
-  	Cards.insert({title: "Add your first card", content: "Click the 'New Card' button above to add a new card", owner: user_id, status: "todo", index:1});
+  	Cards.insert({title: "Add your first card", content: newcard, owner: user_id, status: "todo", index:1});
   	Cards.insert({title: "Move this card to doing", content: movecard, owner: user_id, status: "todo", index:2});
-  	Cards.insert({title: "Become a power user", content: "Watch this to learn about Mingle", owner: user_id, status: "todo", index:3});
+  	Cards.insert({title: "Become a power user", content: powercard, owner: user_id, status: "todo", index:3});
   }
 
 
