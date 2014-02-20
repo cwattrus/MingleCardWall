@@ -82,7 +82,8 @@ if (Meteor.isClient) {
     return Cards.find({status:"done"});
   }
   Template.cardWall.pulse = function() {
-    if(this.pulse) return true;
+    if(Session.get("click_tut_off")==true) return false;
+    else if(this.pulse==true) return true;
     else return false;
   }
   Template.cardWall.drag_pulse = function() {
@@ -200,7 +201,7 @@ if (Meteor.isClient) {
   Template.cardWall.events({
     'click .mini-card' : function() {
       Session.set("selected_card", this._id);
-
+      Session.set("click_tut_off", true);
       if($('.ring')[0]) var card_id = $('.ring')[0].parentNode.getAttribute('id');
       if(card_id) Cards.update({'_id':card_id },{$set: {pulse: false}});
       Logs.insert({"action": "Card opened via mini card", "user": Meteor.user()._id, "object": Session.get("selected_card")});
