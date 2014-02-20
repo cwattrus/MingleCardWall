@@ -3,13 +3,19 @@ if (Meteor.isClient) {
   var times_to_try = 1;
 
   Meteor.startup(function () {
-    $(document).ready(function (){
-      if(counter==times_to_try) {
-        var card = moveFirstCard();
-        if(card==false) times_to_try += 1;
-        counter += 1;
-      }
-    });
+    // $(document).ready(function (){
+    //   for (var i=0;i<10;i++) {
+    //     if(i==times_to_try) {
+    //       var card = moveFirstCard();
+    //       if(card==false) {
+    //         times_to_try += 1;
+    //       }
+    //       counter += 1;
+    //       console.log("this is time " + counter + " out of " + times_to_try);
+
+    //     }
+    //   }
+    // });
   });
 
   Template.cardWall.rendered = function() {
@@ -25,15 +31,19 @@ if (Meteor.isClient) {
     });
 
     $(".card-column").on("dropactivate", handleDropActivate);
+
+    $(document).ready(function (){
+      moveFirstCard();
+    });
   }
 
   function moveFirstCard() {
     if((Meteor.user()!=null)||(Meteor.user()!=undefined)) {
-          console.log("Trying again");
-
       if(($(".ring")[0]==undefined)&&(Meteor.user().profile.first_login)) {
-        if($('.mini-card')[0]!=undefined) {
-          var card_id = $('.mini-card')[0].getAttribute('id');
+        if($('div:contains("Move this ")')[2]!=undefined) {
+          console.log("This is time: " + counter + " out of " + times_to_try + " mini card is " + $('div:contains("Move this ")')[2] + " it's the users first time? - " + Meteor.user().profile.first_login);
+
+          var card_id = $('div:contains("Add your first ")')[2].getAttribute('id');
           Cards.update({'_id':card_id },{$set: {'status': 'doing', pulse: true}});
           return card_id;
         }
