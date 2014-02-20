@@ -195,7 +195,10 @@
 	width: 400px;
 	outline: none;
 }
-
+.form-input.half {
+	width: 200px;
+	text-align: right;
+}
 
 
 /* HTML Elements */
