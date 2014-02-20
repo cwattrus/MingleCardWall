@@ -11,6 +11,7 @@
 	  	</button>
 	  	<button class="alt image" id="new_card">
 	  		<i class="fa fa-plus-circle"></i> New Card
+	  		{{#if new_card_tutorial}}<div class="ring new_ring"></div>{{/if}}
 	  	</button>
 	</span>
 	{{#if has_content}}
@@ -20,14 +21,18 @@
 				<div class="view">
 					{{> cardcontent}}
 					<button id="edit_card" class="alt">Edit</button>
-					<button id="close_card" class="">Close</button>
+					<button id="close_card" class="">Close
+		  		{{#if new_card_tutorial_close}}<div class="ring new_ring"></div>{{/if}}
+					</button>
 				</div>
 			{{/if}}
 			{{#if is_editing}}
 				<div class="edit">
-					<textarea class="card-title" placeholder="Enter a descriptive title...">{{card_title}}</textarea>
+					<textarea class="card-title" placeholder="Enter a descriptive title..."   autofocus="autofocus">{{card_title}}</textarea>
 					<textarea class="card-content" placeholder="Optionally give your card some markdown content...">{{card_content}}</textarea>
-					<button id="save_card">Save</button>
+					<button id="save_card">Save
+		  		{{#if new_card_tutorial_save}}<div class="ring new_ring"></div>{{/if}}
+					</button>
 				</div>
 			{{/if}}
 		</div>

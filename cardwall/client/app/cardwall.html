@@ -6,9 +6,8 @@
 		{{#each cards_todo}}
 			<div class="mini-card" id="{{this._id}}">
 				{{this.title}}
-				{{#if pulse}}
-					<div class="ring"></div>
-				{{/if}}
+				{{#if pulse}}<div class="ring"></div>{{/if}}
+				{{#if drag_pulse}}<div class="ring"><i class="drag-ring fa fa-long-arrow-right"></i></div>{{/if}}
 			</div>
 		{{/each}}
 		</div>
@@ -17,9 +16,8 @@
 		{{#each cards_doing}}
 			<div class="mini-card" id="{{this._id}}">
 				{{this.title}}
-				{{#if pulse}}
-					<div class="ring"></div>
-				{{/if}}
+				{{#if pulse}}<div class="ring"></div>{{/if}}
+				{{#if drag_pulse}}<div class="ring"><i class="drag-ring fa fa-long-arrow-right"></i></div>{{/if}}
 			</div>
 		{{/each}}
 		</div>
@@ -28,9 +26,8 @@
 		{{#each cards_done}}
 			<div class="mini-card" id="{{this._id}}">
 				{{this.title}}
-				{{#if pulse}}
-					<div class="ring"></div>
-				{{/if}}
+				{{#if pulse}}<div class="ring"></div>{{/if}}
+				{{#if drag_pulse}}<div class="ring"><i class="drag-ring fa fa-long-arrow-right"></i></div>{{/if}}
 			</div>
 		{{/each}}
 		</div>

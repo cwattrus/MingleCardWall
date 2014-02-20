@@ -9,6 +9,18 @@ if (Meteor.isClient) {
     	return Cards.findOne({"_id": Session.get("selected_card")}).title;
     }
   };
+  Template.header.new_card_tutorial = function () {
+    if(Session.get("new_card_tut")==true) return true;
+    else return false;
+  };
+  Template.header.new_card_tutorial_save = function () {
+    if(Session.get("new_card_tut_save")==true) return true;
+    else return false;
+  };
+  Template.header.new_card_tutorial_close = function () {
+    if(Session.get("new_card_tut_close")==true) return true;
+    else return false;
+  };
   Template.header.has_content = function () {
   	if(Session.get("selected_card")) {
   		var card = Cards.findOne({"_id": Session.get("selected_card")});

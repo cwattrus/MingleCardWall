@@ -6,7 +6,6 @@ if (Meteor.isClient) {
     return Meteor.user().profile.first_name;
   };
 
-
   Template.signup.events({
     'click #add_new_user' : function () {
       createUserAndLogin();
@@ -56,7 +55,7 @@ if (Meteor.isClient) {
               $("#signup_page").fadeToggle(200);
             }
           });
-        } 
+        }
       },4000);
   }
 
@@ -69,7 +68,7 @@ if (Meteor.isClient) {
   Template.header.events({
     'click #log_out' : function () {
       Meteor.logout();
-      
+
     }
   });
 }
