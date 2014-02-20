@@ -262,6 +262,10 @@ button.small {
 	font-size: 14pt;
 	margin-left: 20px;
 }
+button.action {
+	background-color: #EF5B6C;
+	color: white;
+}
 
 h1 {
 	font-size: 23pt;
