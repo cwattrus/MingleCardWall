@@ -11,7 +11,16 @@ if (Meteor.isClient) {
       var first = $("#first_name").val();
       var last = $("#last_name").val();
       var url = $("#site_url").val();
-      Accounts.createUser({username:email, password: password, email: email, profile : {first_name: first, last_name: last, url: url }});
+      $("#signup_page").hide();
+      $("#load").fadeToggle(200);
+      var counter = 0;
+      setTimeout(function(){
+        console.log(counter);
+           counter +=1;
+           if (counter == 1){
+            Accounts.createUser({username:email, password: password, email: email, profile : {first_name: first, last_name: last, url: url, first_login: true }});
+          } 
+        },4000);
     },
     'click #login' : function() {
       $("#signup_page").toggle();

@@ -1,0 +1,43 @@
+.projects-dropdown {
+	display: none;
+	width: 225px;
+	border: 1px solid #f3f3f3;
+	background-color: white;
+	position: absolute;
+	top: 35px;
+	left: 195px;
+	-webkit-box-shadow: 1px 0 2px 0 rgba(0,0,0,0.1);
+	box-shadow: 1px 0 2px 0 rgba(0,0,0,0.1);
+	padding: 20px;
+	list-style: none;
+}
+
+.projects-dropdown li {
+	margin-bottom: 15px;
+}
+
+.new-tab-page {
+	display: none;
+}
+
+/* Page */
+
+.page {
+	display: none;
+	padding: 20px;
+}
+
+#login_page {
+	display: none;
+}
+
+/* nav items */
+.small-box {
+	border: 1px solid #DDD;
+	width: 250px;
+	padding: 10px 20px 20px 20px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.card-wall {display: block;}

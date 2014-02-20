@@ -110,7 +110,7 @@
 
 /* Backgrounds */
 .stickies {
-	background: url(/stickies.jpg);
+	background: url(/background.png);
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 100%;
@@ -121,13 +121,14 @@
 /* Accounts Styles */
 .box-container {
 	position: relative;
-	top: 200px;
+	border: 1px solid #DDD;
+	top: 120px;
 	left: 400px;
 	width: 700px;
 }
 
 .box-header {
-	background-color: rgba(71,71,71, 0.4);
+	background-color: rgba(239,91,108, 0.9);
 	box-sizing: border-box;
 	color: white;
 	padding: 10px 10px 0 20px;
@@ -145,6 +146,7 @@
 	vertical-align: middle;
 }
 .box-header button {
+	background-color: rgba(0,0,0,0.2);
 	float: right;
 	margin-top: 10px;
 	margin-right: 10px;
@@ -153,7 +155,7 @@
 .box-content {
 	background-color: rgba(255,255,255,0.9);
 	box-sizing: border-box;
-	color: white;
+	color: gray;
 	padding: 20px 10px 0 20px;
 	width: 700px;
 }
@@ -194,10 +196,7 @@
 	outline: none;
 }
 
-/* Page */
-#login_page {
-	display: none;
-}
+
 
 /* HTML Elements */
 html { height: 100% }
@@ -248,10 +247,24 @@ h1 small {
 	font-size: 12pt;
 	font-weight: 300;
 }
+h2 {
+	font-size: 16pt;
+	font-weight: 300;
+	margin-top: 0;
+}
 
 label {
 	color: black;
 	font-size: 12pt;
+}
+
+hr {
+	border: none;
+	border-bottom: 1px solid #DDD;
+}
+hr.no-line {
+	border: none;
+	height: 20px;
 }
 
 /* Generic Classes */
@@ -273,10 +286,34 @@ a {
 }
 .tab {
 	display: inline-block;
+	cursor: pointer;
 	padding: 10px 15px 0px 15px;
 }
 .tab.selected {
 	border-width: 1px 1px 0 1px;
 	border-color: #c3c3c3;
 	border-style: solid;
+}
+.tab button {
+	padding: 5px 13px;
+	border-style: dashed;
+	border-bottom: none;
+}
+
+.loader {
+	padding: 30px
+}
+
+#load {
+	display: none;
+}
+
+.pages-list {
+	list-style: none;
+}
+.pages-list li {
+	margin-bottom: 10px;
+}
+.fa.green {
+	color: #7AD16D;
 }

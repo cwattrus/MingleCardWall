@@ -1,11 +1,14 @@
 <template name="cardWall">
 	<div class="clear-fix"></div>
-	<div class="card-wall">
+	<div class="card-wall page">
 		<div class="card-column todo">
 		<div>To Do</div>
 		{{#each cards_todo}}
 			<div class="mini-card" id="{{this._id}}">
 				{{this.title}}
+				{{#if pulse}}
+					<div class="ring"></div>
+				{{/if}}
 			</div>
 		{{/each}}
 		</div>
@@ -14,6 +17,9 @@
 		{{#each cards_doing}}
 			<div class="mini-card" id="{{this._id}}">
 				{{this.title}}
+				{{#if pulse}}
+					<div class="ring"></div>
+				{{/if}}
 			</div>
 		{{/each}}
 		</div>
@@ -22,6 +28,9 @@
 		{{#each cards_done}}
 			<div class="mini-card" id="{{this._id}}">
 				{{this.title}}
+				{{#if pulse}}
+					<div class="ring"></div>
+				{{/if}}
 			</div>
 		{{/each}}
 		</div>
