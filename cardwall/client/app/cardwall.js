@@ -1,22 +1,5 @@
 if (Meteor.isClient) {
-  var counter = 1;
-  var times_to_try = 1;
 
-  Meteor.startup(function () {
-    // $(document).ready(function (){
-    //   for (var i=0;i<10;i++) {
-    //     if(i==times_to_try) {
-    //       var card = moveFirstCard();
-    //       if(card==false) {
-    //         times_to_try += 1;
-    //       }
-    //       counter += 1;
-    //       console.log("this is time " + counter + " out of " + times_to_try);
-
-    //     }
-    //   }
-    // });
-  });
 
   Template.cardWall.rendered = function() {
     $(".mini-card").draggable({
@@ -41,8 +24,6 @@ if (Meteor.isClient) {
     if((Meteor.user()!=null)||(Meteor.user()!=undefined)) {
       if(($(".ring")[0]==undefined)&&(Meteor.user().profile.first_login)) {
         if($('div:contains("Move this ")')[2]!=undefined) {
-          console.log("This is time: " + counter + " out of " + times_to_try + " mini card is " + $('div:contains("Move this ")')[2] + " it's the users first time? - " + Meteor.user().profile.first_login);
-
           var card_id = $('div:contains("Add your first ")')[2].getAttribute('id');
           Cards.update({'_id':card_id },{$set: {'status': 'doing', pulse: true}});
           return card_id;
@@ -52,10 +33,9 @@ if (Meteor.isClient) {
     return false;
   }
 
-
-    function handleDropActivate(event, ui) {
-      ui.draggable.css({"border-style": "dashed", "border-left-style": "solid"});
-    }
+  function handleDropActivate(event, ui) {
+    ui.draggable.css({"border-style": "dashed", "border-left-style": "solid"});
+  }
 
     function handleDrop(event, ui) {
       var draggable = ui.draggable;
@@ -74,12 +54,15 @@ if (Meteor.isClient) {
           }
           return true;
         }
+        Logs.insert({"action": "Card dropped in doing", "user": Meteor.user()._id, "object": draggable.attr('id')});
       }
       else if(todoDrop) {
         Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'todo'}});
+        Logs.insert({"action": "Card dropped in todo", "user": Meteor.user()._id, "object": draggable.attr('id')});
       }
       else {
         Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'done'}});
+        Logs.insert({"action": "Card dropped in done", "user": Meteor.user()._id, "object": draggable.attr('id')});
       }
     }
 
@@ -113,18 +96,22 @@ if (Meteor.isClient) {
     'click #new_card' : function () {
       $(".card-title").val("");
       $(".card-content").val("");
-      var newCard = Cards.insert({title: "My new card", content: "A world of possiblies...", owner: Meteor.userId(), status: "todo"});
+      var newCard = Cards.insert({title: "My new card", content: "A world of possibilities...", owner: Meteor.userId(), status: "todo"});
       Session.set("selected_card", newCard);
       Session.set("editing", true);
       if(Session.get("new_card_tut")==true){
         Session.set("new_card_tut", false);
         Session.set("new_card_tut_save", true);
       }
+      Logs.insert({"action": "Card created", "user": Meteor.user()._id, "object": newCard});
     },
     'click .lightbox' : function(event) {
       event.stopPropagation();
     },
     'click .overlay' : function () {
+      if(Session.get("selected_card")==undefined) Logs.insert({"action": "Card lightbox closed", "user": Meteor.user()._id});
+      else Logs.insert({"action": "Card lightbox closed", "user": Meteor.user()._id, "object": Session.get("selected_card")});
+
       Session.set("selected_card", null);
       Session.set("editing", false);
       if(Meteor.user().profile.first_login) {
@@ -134,26 +121,19 @@ if (Meteor.isClient) {
           if(card_id) Cards.update({'_id':card_id },{$set: {'status': 'done'}});
           Session.set("drag_tutorial_start", true);
         }
-      }
+      };
     },
     'click #save_card' : function() {
       var card_title = $(".card-title").val();
       var card_content = $(".card-content").val();
       if(Session.get("selected_card")) {
         Cards.update({ _id:Session.get("selected_card")} , { $set: {title: card_title, content: card_content}});
-        $(".card-content").val(card_content);
-        $(".card-content-read").html(card_content);
-        $(".card-title").val(card_title);
-        $(".card-title-read").html(card_title);
+        Logs.insert({"action": "Card updated", "user": Meteor.user()._id, "object": Session.get("selected_card")});        
       }
       else {
         var newCard = Cards.insert({title: card_title, content: card_content, owner: Meteor.userId(), status: "todo"});
         Session.set("selected_card", newCard);
-        newCard = Cards.findOne({"_id": newCard});
-        $(".card-content").val(newCard.content);
-        $(".card-content-read").html(newCard.content);
-        $(".card-title").val(newCard.title);
-        $(".card-title-read").html(newCard.title);
+        Logs.insert({"action": "Card created", "user": Meteor.user()._id, "object": Session.get("selected_card")});
       }
       Session.set("editing", false);
       if(Session.get("new_card_tut_save")==true){
@@ -164,14 +144,18 @@ if (Meteor.isClient) {
     },
     'click .dropdown' : function() {
       $(".projects-dropdown").toggle(100);
+      Logs.insert({"action": "Click projects dropdown", "user": Meteor.user()._id});
     },
     'click #edit_card' : function() {
       if(Session.get("selected_card")) {
         Session.set("editing", true);
+        Logs.insert({"action": "Card edit mode activated", "user": Meteor.user()._id, "object": Session.get("selected_card")});
       }
     },
     'click #close_card' : function() {
-      $(".overlay").fadeToggle(300);
+      if(Session.get("selected_card")==undefined) Logs.insert({"action": "Card lightbox closed", "user": Meteor.user()._id});
+      else Logs.insert({"action": "Card lightbox closed", "user": Meteor.user()._id, "object": Session.get("selected_card")});
+
       $(".card-title").val("");
       $(".card-content").val("");
       Session.set("selected_card", null);
@@ -194,6 +178,8 @@ if (Meteor.isClient) {
 
       if($('.ring')[0]) var card_id = $('.ring')[0].parentNode.getAttribute('id');
       if(card_id) Cards.update({'_id':card_id },{$set: {pulse: false}});
+      Logs.insert({"action": "Card opened via mini card", "user": Meteor.user()._id, "object": Session.get("selected_card")});
+
     },
 
   });

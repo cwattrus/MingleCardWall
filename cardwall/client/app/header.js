@@ -60,4 +60,9 @@ if (Meteor.isClient) {
   //   if(Session.get("selected_card")) return true;
   //   else return false;
   // };
+  Template.header.events({
+    'click .logo' : function() {
+      Logs.insert({"action": "Click on logo", "user": Meteor.user()._id});
+    }
+  });
 }
