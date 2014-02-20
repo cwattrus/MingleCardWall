@@ -30,7 +30,7 @@
 	padding: 10px;
 }
 .ring {
-    border: 3px solid #999;
+    border: 3px solid red;
     -webkit-border-radius: 30px;
     height: 18px;
     width: 18px;

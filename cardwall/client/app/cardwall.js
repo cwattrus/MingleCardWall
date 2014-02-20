@@ -24,7 +24,7 @@ if (Meteor.isClient) {
     if((Meteor.user()!=null)||(Meteor.user()!=undefined)) {
       if(($(".ring")[0]==undefined)&&(Meteor.user().profile.first_login)) {
         if($('div:contains("Move this ")')[2]!=undefined) {
-          var card_id = $('div:contains("Add your first ")')[2].getAttribute('id');
+          var card_id = $('div:contains("Click me ")')[2].getAttribute('id');
           Cards.update({'_id':card_id },{$set: {'status': 'doing', pulse: true}});
           return card_id;
         }
@@ -63,6 +63,10 @@ if (Meteor.isClient) {
       else {
         Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'done'}});
         Logs.insert({"action": "Card dropped in done", "user": Meteor.user()._id, "object": draggable.attr('id')});
+        if(draggable.attr('id')==$('div:contains("Move this ")')[2].getAttribute('id')) {
+          console.log("Initiating all powerful step 1");
+          Session.set("power_tutorial_start", true);
+        }
       }
     }
 
@@ -83,10 +87,28 @@ if (Meteor.isClient) {
   }
   Template.cardWall.drag_pulse = function() {
     if(Session.get("drag_tutorial_start")==true) {
-      if($(".mini-card")[1]!= undefined) {
-        if(this._id==$(".mini-card")[1].getAttribute("id")) {
+      if($('div:contains("Move this ")')[2]!= undefined) {
+        if(this._id==$('div:contains("Move this ")')[2].getAttribute("id")) {
           return true;
         }
+      }
+    }
+    else return false;
+  }
+  Template.cardWall.drag_pulse_second = function() {
+    if(Session.get("drag_tutorial_start")==true) {
+      if($('div:contains("Move this ")')[5]!= undefined) {
+        if(this._id==$('div:contains("Move this ")')[5].getAttribute("id")) {
+          return true;
+        }
+      }
+    }
+    else return false;
+  }
+  Template.cardWall.power_pulse = function() {
+    if(Session.get("power_tutorial_start")==true) {
+      if($('div:contains("Become a power ")')[2]!= undefined) {
+        if(this._id==$('div:contains("Become a power ")')[2].getAttribute('id')) return true;
       }
     }
     else return false;
@@ -117,7 +139,7 @@ if (Meteor.isClient) {
       if(Meteor.user().profile.first_login) {
         if(Session.get("new_card_tut")==undefined) Session.set("new_card_tut", true);
         else {
-          var card_id = $('div:contains("Add your first ")')[2].getAttribute('id');
+          var card_id = $('div:contains("Click me ")')[2].getAttribute('id');
           if(card_id) Cards.update({'_id':card_id },{$set: {'status': 'done'}});
           Session.set("drag_tutorial_start", true);
         }
@@ -158,13 +180,16 @@ if (Meteor.isClient) {
 
       $(".card-title").val("");
       $(".card-content").val("");
+      if($('div:contains("Move this card ")')[5]!=null) {
+        if(Session.get("selected_card")==$('div:contains("Move this card ")')[5].getAttribute('id')) Session.set("drag_tutorial_start", true);
+      }
       Session.set("selected_card", null);
       if(Meteor.user().profile.first_login) {
         if(Session.get("new_card_tut")==undefined) Session.set("new_card_tut", true);
         else {
           Session.set("new_card_tut_close", false);
 
-          var card_id = $('div:contains("Add your first ")')[2].getAttribute('id');
+          var card_id = $('div:contains("Click me ")')[2].getAttribute('id');
           if(card_id) Cards.update({'_id':card_id },{$set: {'status': 'done'}});
           Session.set("drag_tutorial_start", true);
         }

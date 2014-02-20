@@ -39,7 +39,7 @@ Try clicking around a bit and be sure to check out the following:\
 - **Become a beta user!**";
 
   function seedCards(user_id) {
-  	Cards.insert({title: "Add your first card", content: newcard, owner: user_id, status: "todo", index:1});
+  	Cards.insert({title: "Click me first!!", content: newcard, owner: user_id, status: "todo", index:1});
   	Cards.insert({title: "Move this card to doing", content: movecard, owner: user_id, status: "todo", index:2});
   	Cards.insert({title: "Become a power user", content: powercard, owner: user_id, status: "todo", index:3});
   }
