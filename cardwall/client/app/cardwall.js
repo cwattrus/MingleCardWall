@@ -51,6 +51,7 @@ if (Meteor.isClient) {
           if(draggable.attr('id')==$('div:contains("Move this ")')[2].getAttribute('id')) {
             Session.set("selected_card",draggable.attr('id'));
             Meteor.users.update({'_id':Meteor.user()._id.toString() },{$set: {profile: {'first_login': false}}});
+            Cards.update({'_id':draggable.attr('id') },{$set: {'title': 'Move this card to done'}});
           }
           return true;
         }
