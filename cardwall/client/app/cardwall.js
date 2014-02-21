@@ -132,6 +132,13 @@ if (Meteor.isClient) {
     'click .lightbox' : function(event) {
       event.stopPropagation();
     },
+    'click .delete' : function() {
+      if(Session.get("selected_card")!=null) {
+        Meteor.call('deleteCard', Session.get("selected_card"), function(e, r) {
+          Session.set("selected_card", null);
+        });
+      }
+    },
     'click .overlay' : function () {
       if(Session.get("selected_card")==undefined) Logs.insert({"action": "Card lightbox closed", "user": Meteor.user()._id});
       else Logs.insert({"action": "Card lightbox closed", "user": Meteor.user()._id, "object": Session.get("selected_card")});
@@ -212,7 +219,6 @@ if (Meteor.isClient) {
       Logs.insert({"action": "Card opened via mini card", "user": Meteor.user()._id, "object": Session.get("selected_card")});
 
     },
-
   });
 
   function focusOnNewCard() {
