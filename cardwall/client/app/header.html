@@ -5,10 +5,20 @@
 			<a id="log_out" class="alt"><i class="fa fa-sign-out"></i></a>
 		</span>
 		<img class="logo" src="/logo.png">
-	  	<div class="project-name">Snap-Ci</div>
-	  	<button class="dropdown">
+	  	<div class="project-name">
+	  		{{project_name}}
+	  		{{#if tutorial_active}}
+			<button class="inline" id="end_tutorial">
+		  		<i class="fa fa-check"></i> End Tutorial
+			 </button>
+			 {{/if}}
+	  	</div>
+	  	{{#if tutorial_ended}}
+	  	<button class="dropdown" id="project_list_toggle">
 	  		<i class="fa fa-chevron-down"></i>
 	  	</button>
+	  	{{/if}}
+	  
 	  	<button class="alt image" id="new_card">
 	  		<i class="fa fa-plus-circle"></i> New Card
 	  		{{#if new_card_tutorial}}<div class="ring new_ring"></div>{{/if}}
@@ -40,11 +50,14 @@
 	</div>
 	{{/if}}
 	<ul class="projects-dropdown">
-		<li>Twist Card Wall</li>
-		<li>Go Open Source</li>
-		<li>Mingle Design</li>
-		<li><hr /></li>
-		<li><em>+ New Project</em></li>
+		<li>
+			<strong>Start your own project</strong>
+			<p>Give a descriptive name that everyone on your team understands</p>
+			<input type="text" id="new_project_name" autofocus="autofocus"/>
+			<button class="inline alt small" id="save_project_name">Save</button>
+			<hr class="no-line">
+			<a class="looks-like-a-link small">or, continue tutorial</a>
+		</li>
 	</li>
 </template>
 

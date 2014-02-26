@@ -1,6 +1,6 @@
 .projects-dropdown {
 	display: none;
-	width: 225px;
+	width: 275px;
 	border: 1px solid #f3f3f3;
 	background-color: white;
 	position: absolute;
@@ -49,3 +49,19 @@
 	cursor: pointer;
 	display: none;
 }
+
+button.inline {
+	display: inline-block;
+	font-size: small;
+	height: 30px;
+	padding: 5px 10px;
+	margin-left: 10px;
+}
+
+a.looks-like-a-link {
+	text-decoration: underline;
+}
+a.looks-like-a-link.small {
+	font-size: small;
+}
+

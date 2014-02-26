@@ -187,10 +187,10 @@ if (Meteor.isClient) {
       $(".projects-dropdown").toggle(100);
       Logs.insert({"action": "Click projects dropdown", "user": Meteor.user()._id});
     },
-    'click .project-name' : function() {
-      $(".projects-dropdown").toggle(100);
-      Logs.insert({"action": "Click projects dropdown", "user": Meteor.user()._id});
-    },
+    // 'click .project-name' : function() {
+    //   $(".projects-dropdown").toggle(100);
+    //   Logs.insert({"action": "Click projects dropdown", "user": Meteor.user()._id});
+    // },
     'click #edit_card' : function() {
       if(Session.get("selected_card")) {
         Session.set("editing", true);
