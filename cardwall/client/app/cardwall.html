@@ -37,5 +37,20 @@
 			</div>
 		{{/each}}
 		</div>
+		{{#each columns}}
+			<div class="card-column" id="{{this._id}}">
+			<span class="pull-right delete-column">x</span>
+			<div class="column-title">{{this.name}}</div>
+			{{#each cards}}
+				<div class="mini-card" id="{{this._id}}">
+					{{this.title}}
+					{{#if pulse}}<div class="ring"></div>{{/if}}
+					{{#if drag_pulse}}<div class="ring"><i class="drag-ring fa fa-long-arrow-right"></i></div>{{/if}}
+					{{#if drag_pulse_second}}<div class="ring"><i class="drag-ring fa fa-long-arrow-right"></i></div>{{/if}}
+					{{#if power_pulse}}<div class="ring"></div>{{/if}}
+				</div>
+			{{/each}}
+			</div>
+		{{/each}}
 	</div>
 </template>

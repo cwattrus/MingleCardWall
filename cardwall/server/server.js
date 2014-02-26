@@ -54,6 +54,9 @@ Try clicking around a bit and be sure to check out the following:\
   Meteor.methods({
     deleteCard: function (cardId) {
       Cards.remove({"_id":cardId});
+    },
+    deleteStatus: function (statusId) {
+      Status.remove({"_id":statusId});
     }
   });
 }

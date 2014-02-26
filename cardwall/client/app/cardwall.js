@@ -1,6 +1,4 @@
 if (Meteor.isClient) {
-
-
   Template.cardWall.rendered = function() {
     $(".mini-card").draggable({
       snap: '.card-column',
@@ -37,42 +35,54 @@ if (Meteor.isClient) {
     ui.draggable.css({"border-style": "dashed", "border-left-style": "solid"});
   }
 
-    function handleDrop(event, ui) {
-      var draggable = ui.draggable;
-      var todoDrop = $(this).hasClass("todo");
-      var doingDrop = $(this).hasClass("doing");
-      var doneDrop = $(this).hasClass("done");
+  function handleDrop(event, ui) {
+    var draggable = ui.draggable;
+    var todoDrop = $(this).hasClass("todo");
+    var doingDrop = $(this).hasClass("doing");
+    var doneDrop = $(this).hasClass("done");
 
-      if (doingDrop) {
-        Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'doing'}});
-
-        if(Session.get("drag_tutorial_start")==true) {
-          Session.set("drag_tutorial_start", false);
+    if (doingDrop) {
+      Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'doing'}});
+      if(Session.get("drag_tutorial_start")==true) {
+        Session.set("drag_tutorial_start", false);
+        if($('div:contains("Move this ")')[2]!=undefined) {
           if(draggable.attr('id')==$('div:contains("Move this ")')[2].getAttribute('id')) {
             Session.set("selected_card",draggable.attr('id'));
             Meteor.users.update({'_id':Meteor.user()._id.toString() },{$set: {profile: {'first_login': false}}});
             Cards.update({'_id':draggable.attr('id') },{$set: {'title': 'Move this card to done'}});
           }
-          return true;
         }
-        Logs.insert({"action": "Card dropped in doing", "user": Meteor.user()._id, "object": draggable.attr('id')});
+        return true;
       }
-      else if(todoDrop) {
-        Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'todo'}});
-        Logs.insert({"action": "Card dropped in todo", "user": Meteor.user()._id, "object": draggable.attr('id')});
-      }
-      else {
-        Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'done'}});
-        Logs.insert({"action": "Card dropped in done", "user": Meteor.user()._id, "object": draggable.attr('id')});
+      Logs.insert({"action": "Card dropped in doing", "user": Meteor.user()._id, "object": draggable.attr('id')});
+    }
+    else if(todoDrop) {
+      Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'todo'}});
+      Logs.insert({"action": "Card dropped in todo", "user": Meteor.user()._id, "object": draggable.attr('id')});
+    }
+    else if(doneDrop){
+      Cards.update({'_id':draggable.attr('id') },{$set: {'status': 'done'}});
+      Logs.insert({"action": "Card dropped in done", "user": Meteor.user()._id, "object": draggable.attr('id')});
+      if($('div:contains("Move this ")')[2]!=undefined) {
         if(draggable.attr('id')==$('div:contains("Move this ")')[2].getAttribute('id')) {
           console.log("Initiating all powerful step 1");
           Session.set("power_tutorial_start", true);
         }
       }
     }
+    else {
+      if(Status.findOne({"_id":this.getAttribute("id")})) {
+        Cards.update({'_id':draggable.attr('id') },{$set: {'status': this.getAttribute("id")}});
+      }
+    }
+  }
 
-  Meteor.subscribe("cards");
-
+  Template.cardWall.columns = function() {
+    return Status.find({});
+  }
+  Template.cardWall.cards = function() {
+    return Cards.find({"status": this._id});
+  }
   Template.cardWall.cards_todo = function() {
     return Cards.find({status:"todo"}, {sort: {index: 1}});
   }
@@ -148,9 +158,11 @@ if (Meteor.isClient) {
       if(Meteor.user().profile.first_login) {
         if(Session.get("new_card_tut")==undefined) Session.set("new_card_tut", true);
         else {
-          var card_id = $('div:contains("Click me ")')[2].getAttribute('id');
-          if(card_id) Cards.update({'_id':card_id },{$set: {'status': 'done'}});
-          Session.set("drag_tutorial_start", true);
+          if($('div:contains("Click me ")')[2]!=undefined) {
+            var card_id = $('div:contains("Click me ")')[2].getAttribute('id');
+            if(card_id) Cards.update({'_id':card_id },{$set: {'status': 'done'}});
+            Session.set("drag_tutorial_start", true);
+          }
         }
       };
     },
@@ -162,9 +174,7 @@ if (Meteor.isClient) {
         Logs.insert({"action": "Card updated", "user": Meteor.user()._id, "object": Session.get("selected_card")});        
       }
       else {
-        var newCard = Cards.insert({title: card_title, content: card_content, owner: Meteor.userId(), status: "todo"});
-        Session.set("selected_card", newCard);
-        Logs.insert({"action": "Card created", "user": Meteor.user()._id, "object": Session.get("selected_card")});
+        createNewCard("todo");
       }
       Session.set("editing", false);
       if(Session.get("new_card_tut_save")==true){
@@ -210,6 +220,14 @@ if (Meteor.isClient) {
     }
   });
 
+  function createNewCard(cardStatus) {
+    var newCard = Cards.insert({title: "", content: "", owner: Meteor.userId(), status: cardStatus});
+    Session.set("selected_card", newCard);
+    Session.set("editing", true);
+
+    Logs.insert({"action": "Card created", "user": Meteor.user()._id, "object": Session.get("selected_card")});
+  }
+
   Template.cardWall.events({
     'click .mini-card' : function() {
       Session.set("selected_card", this._id);
@@ -217,8 +235,25 @@ if (Meteor.isClient) {
       if($('.ring')[0]) var card_id = $('.ring')[0].parentNode.getAttribute('id');
       if(card_id) Cards.update({'_id':card_id },{$set: {pulse: false}});
       Logs.insert({"action": "Card opened via mini card", "user": Meteor.user()._id, "object": Session.get("selected_card")});
-
     },
+    'dblclick .card-column' : function(event) {
+      console.log(this);
+      createNewCard(this._id);
+    },
+    'click .delete-column' : function() {
+      console.log(this);
+      if(Status.findOne({"_id":this._id})) {
+        Meteor.call('deleteStatus', this._id, function(e, r) {
+          Logs.insert({"action": "Column deleted", "user": Meteor.user()._id, "object": this._id});
+        });
+      }
+    },
+    'mouseenter .column-title' : function() {
+      $(".delete-column").fadeToggle(300);
+    },
+    'mouseleave .card-column' : function() {
+      $(".delete-column").fadeToggle(300);
+    }
   });
 
   function focusOnNewCard() {

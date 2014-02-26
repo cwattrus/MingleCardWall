@@ -1,0 +1,81 @@
+/* Accounts Styles */
+.box-container {
+	border: 1px solid #DDD;
+	margin: 0 auto;
+	margin-top: 70px;
+	max-width: 600px;
+	width: 100%;
+}
+
+.box-header {
+	background-color: rgba(239,91,108, 0.9);
+	box-sizing: border-box;
+	color: white;
+	padding: 10px 10px 0 20px;
+	margin: 0;
+	width: 100%;
+}
+.box-header h1 {
+	display: inline-block;
+	float: left;
+	margin: 0;
+}
+.box-header h1 small {
+	margin-left: 30px;
+	line-height: 60px;
+	vertical-align: middle;
+}
+.box-header button {
+	background-color: rgba(0,0,0,0.2);
+	float: right;
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
+.box-content {
+	background-color: rgba(255,255,255,0.9);
+	box-sizing: border-box;
+	color: gray;
+	padding: 20px 10px 0 10px;
+	width: 100%;
+}
+
+.box-footer {
+	background-color: rgba(255,255,255,0.9);
+	box-sizing: border-box;
+	padding: 20px 10px 20px 20px;
+	width: 100%;
+}
+.box-footer button {
+	display: block;
+}
+
+
+.box-form {
+	padding: 10px 0;
+}
+
+.form-control {
+	margin: 20px 0;
+}
+
+.box-form label {
+	display: inline-block;
+	margin-right: 20px;
+	text-align: right;
+	width: 100px;
+}
+
+.form-input {
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid #BBB;
+	font-size: 12pt;
+	padding: 5px 10px;
+	width: 400px;
+	outline: none;
+}
+.form-input.half {
+	width: 200px;
+	text-align: right;
+}

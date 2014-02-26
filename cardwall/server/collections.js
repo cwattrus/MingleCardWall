@@ -7,3 +7,6 @@ Meteor.publish("beta", function () {
 Meteor.publish("logs", function () {
   return Logs.find({owner: this.userId});
 });
+Meteor.publish("status", function () {
+  return Status.find({});
+});
