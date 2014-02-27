@@ -68,10 +68,7 @@ if (Meteor.isClient) {
     }
     else return true;
   };
-  // Template.header.active_card = function () {
-  //   if(Session.get("selected_card")) return true;
-  //   else return false;
-  // };
+
   Template.header.events({
     'click .logo' : function() {
       Logs.insert({"action": "Click on logo", "user": Meteor.user()._id});
@@ -85,7 +82,6 @@ if (Meteor.isClient) {
       $(".projects-dropdown").hide();
       $("#end_tutorial").hide();
       $("#project_list_toggle").fadeToggle(200);
-      Session.set("tutorial_ended", true);
     }
   });
 
@@ -93,9 +89,16 @@ if (Meteor.isClient) {
     Cards.find({}).map(function(doc, index, cursor) {
       Cards.update({'_id':doc._id },{$set: {'status': 'done'}});
     });
+    Meteor.users.update({'_id':Meteor.user()._id },{$set: {profile: {'tutorial_completed': true}}});
+
+    Session.set("tutorial_ended", true);
+    Logs.insert({"action": "Tutorial ended", "user": Meteor.user()._id});
   }
 
   function saveProjectName(newProjectName) {
     Session.set("project_name", newProjectName);
+    var project = Projects.insert({"name":newProjectName, "owner": Meteor.user()._id});
+    Meteor.users.update({'_id':Meteor.user()._id },{$set: {profile: {'default_project': project}}});
+    Session.set("project_id", project);
   }
 }

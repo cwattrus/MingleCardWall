@@ -15,6 +15,14 @@ if (Meteor.isClient) {
 
     $(document).ready(function (){
       moveFirstCard();
+      if(Meteor.user().profile.completed_tutorial==true) {
+        console.log(Meteor.user().profile.tutorial_completed);
+        Session.set("tutorial_ended", true);
+      }
+
+      if(Meteor.user().profile.default_project) {
+        Session.set("project_id", Meteor.user().profile.default_project);
+      }
     });
   }
 
@@ -48,7 +56,6 @@ if (Meteor.isClient) {
         if($('div:contains("Move this ")')[2]!=undefined) {
           if(draggable.attr('id')==$('div:contains("Move this ")')[2].getAttribute('id')) {
             Session.set("selected_card",draggable.attr('id'));
-            Meteor.users.update({'_id':Meteor.user()._id.toString() },{$set: {profile: {'first_login': false}}});
             Cards.update({'_id':draggable.attr('id') },{$set: {'title': 'Move this card to done'}});
           }
         }
@@ -81,16 +88,19 @@ if (Meteor.isClient) {
     return Status.find({});
   }
   Template.cardWall.cards = function() {
-    return Cards.find({"status": this._id});
+    return Cards.find({"status": this._id, "projects": Session.get("project_id")});
   }
   Template.cardWall.cards_todo = function() {
-    return Cards.find({status:"todo"}, {sort: {index: 1}});
+    if(Session.get("project_id")) return Cards.find({status:"todo", "projects": Session.get("project_id")}, {sort: {index: 1}});
+    else return Cards.find({status:"todo"}, {sort: {index: 1}});
   }
   Template.cardWall.cards_doing = function() {
-    return Cards.find({status:"doing"});
+    if(Session.get("project_id")) return Cards.find({status:"doing", "projects": Session.get("project_id")});
+    else return Cards.find({status:"doing"}, {sort: {index: 1}});
   }
   Template.cardWall.cards_done = function() {
-    return Cards.find({status:"done"});
+    if(Session.get("project_id")) return Cards.find({status:"done", "projects": Session.get("project_id")});
+    else return Cards.find({status:"done"}, {sort: {index: 1}});
   }
   Template.cardWall.pulse = function() {
     if(Session.get("click_tut_off")==true) return false;
@@ -130,14 +140,11 @@ if (Meteor.isClient) {
     'click #new_card' : function () {
       $(".card-title").val("");
       $(".card-content").val("");
-      var newCard = Cards.insert({title: "My new card", content: "A world of possibilities...", owner: Meteor.userId(), status: "todo"});
-      Session.set("selected_card", newCard);
-      Session.set("editing", true);
+      createNewCard("todo", Session.get("project_id"));
       if(Session.get("new_card_tut")==true){
         Session.set("new_card_tut", false);
         Session.set("new_card_tut_save", true);
       }
-      Logs.insert({"action": "Card created", "user": Meteor.user()._id, "object": newCard});
     },
     'click .lightbox' : function(event) {
       event.stopPropagation();
@@ -174,7 +181,7 @@ if (Meteor.isClient) {
         Logs.insert({"action": "Card updated", "user": Meteor.user()._id, "object": Session.get("selected_card")});        
       }
       else {
-        createNewCard("todo");
+        createNewCard("todo", Session.get("project_id"));
       }
       Session.set("editing", false);
       if(Session.get("new_card_tut_save")==true){
@@ -220,8 +227,14 @@ if (Meteor.isClient) {
     }
   });
 
-  function createNewCard(cardStatus) {
-    var newCard = Cards.insert({title: "", content: "", owner: Meteor.userId(), status: cardStatus});
+  function createNewCard(cardStatus, project) {
+    var newCard;
+
+    if(project) var projects = [project];
+    else var projects = [];
+    console.log(projects);
+    var newCard = Cards.insert({'title': "", 'content': "", 'owner': Meteor.userId(), 'status': cardStatus, 'projects': projects});
+
     Session.set("selected_card", newCard);
     Session.set("editing", true);
 

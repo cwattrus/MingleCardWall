@@ -70,8 +70,15 @@ if (Meteor.isClient) {
   function login() {
     var email = $("#login_email_address").val();
     var password = $("#login_password").val();
-    Meteor.loginWithPassword(email, password);
-    Logs.insert({"action": "Login via click", "user": Meteor.user()._id});
+    Meteor.loginWithPassword(email, password, function() {
+      if(Meteor.user().profile.first_login) {
+        Meteor.users.update({'_id':Meteor.user()._id },{$set: {profile: {'first_login': false}}});
+      }
+
+      Logs.insert({"action": "Login via click", "user": Meteor.userId()});
+
+    }); 
+
   }
 
   Template.header.events({
