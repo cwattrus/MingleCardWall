@@ -19,10 +19,13 @@ if (Meteor.isClient) {
         console.log(Meteor.user().profile.tutorial_completed);
         Session.set("tutorial_ended", true);
       }
-
+      if(Meteor.user().profile.first_login) {
+        Session.set("feedback_time", false);
+      }
       if(Meteor.user().profile.default_project) {
         Session.set("project_id", Meteor.user().profile.default_project);
       }
+
     });
   }
 
@@ -73,7 +76,7 @@ if (Meteor.isClient) {
       if($('div:contains("Move this ")')[2]!=undefined) {
         if(draggable.attr('id')==$('div:contains("Move this ")')[2].getAttribute('id')) {
           console.log("Initiating all powerful step 1");
-          Session.set("power_tutorial_start", true);
+          Session.set("joyride_active", true);
         }
       }
     }

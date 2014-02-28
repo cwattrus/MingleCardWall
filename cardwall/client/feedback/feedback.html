@@ -1,5 +1,19 @@
 <template name="feedback">
-  <div class="overlay">
-
-  </div>
+	{{#if feedbacktime}}
+		<div class="overlay feedback">
+			<div class="exit-feedback">X</div>
+			<center>
+				<h1>Shout at us</h1>
+				<h2>How curious are you right now?</h2>
+				<button class="alt light-blue inline">Never coming back</button>
+				<button class="alt light-blue inline">Meh :|</button>
+				<button class="alt light-blue inline">I'm amped</button>
+				<button class="alt light-blue inline">I'll dream about it</button>
+				<hr class="no-line" />
+				<h2>Something you'd like to say?</h2>
+				<textarea class="feedback"></textarea>
+				<button class="light-blue">I'm Done</button>
+			</center>
+		</div>
+	{{/if}}
 </template>

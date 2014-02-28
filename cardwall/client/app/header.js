@@ -74,6 +74,7 @@ if (Meteor.isClient) {
       Logs.insert({"action": "Click on logo", "user": Meteor.user()._id});
     },
     'click #end_tutorial' : function() {
+      Session.set("joyride_active", false);
       $(".projects-dropdown").toggle(300);
     },
     'click #save_project_name' : function() {
@@ -100,5 +101,6 @@ if (Meteor.isClient) {
     var project = Projects.insert({"name":newProjectName, "owner": Meteor.user()._id});
     Meteor.users.update({'_id':Meteor.user()._id },{$set: {profile: {'default_project': project}}});
     Session.set("project_id", project);
+    Session.set("feedback_time", true);
   }
 }
