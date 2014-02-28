@@ -5,14 +5,15 @@
 			<center>
 				<h1>Shout at us</h1>
 				<h2>How curious are you right now?</h2>
-				<button class="alt light-blue inline">Never coming back</button>
-				<button class="alt light-blue inline">Meh :|</button>
-				<button class="alt light-blue inline">I'm amped</button>
-				<button class="alt light-blue inline">I'll dream about it</button>
+				<button id="never" class="feeling-never alt light-blue inline {{feeling}}">Never coming back</button>
+				<button id="meh" class="feeling-meh alt light-blue inline {{feeling}}">Meh :|</button>
+				<button id="amped" class="feeling-amped alt light-blue inline {{feeling}}">I'm amped</button>
+				<button id="dreaming" class="feeling-dreamy alt light-blue inline {{feeling}}">I'll dream about it</button>
 				<hr class="no-line" />
 				<h2>Something you'd like to say?</h2>
-				<textarea class="feedback"></textarea>
-				<button class="light-blue">I'm Done</button>
+				<textarea class="feedback" id="feedback_text"></textarea>
+				<p style="max-width:500px;">Thanks for taking the time to help us test out an experiment. If you'd like updates on our progress click the "Add Me!" button at the bottom of the page after you're done here.</p>
+				<button class="light-blue" id="save_feedback">I'm Done</button>
 			</center>
 		</div>
 	{{/if}}

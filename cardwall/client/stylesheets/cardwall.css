@@ -359,3 +359,15 @@ a {
 .joyride-content-wrapper {
 	padding: 1.125em 1.25em 1.5em;
 }
+
+button.feeling-meh.meh, button.feeling-never.never, button.feeling-amped.amped, button.feeling-dreamy.dreaming {
+	background-color: #6ed6d2;
+	color: #333;
+}
+
+@media (max-height: 810px) {
+	.beta {
+		height: 50px;
+		padding: 10px 20px;
+	}
+}
